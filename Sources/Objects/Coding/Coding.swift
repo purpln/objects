@@ -1,10 +1,10 @@
-protocol Coding: Decoding, Encoding { }
+public protocol Coding: Decoding, Encoding { }
 
-protocol Decoding {
+public protocol Decoding {
     mutating func configure(_ values: Any)
 }
 
-extension Decoding {
+public extension Decoding {
     mutating func configure(_ values: Any) {
         guard let values = values as? [String: Any] else { return }
         var types: [String: (AnyExtensions.Type, Int)] = [:]
@@ -57,11 +57,11 @@ extension Decoding {
     }
 }
 
-protocol Encoding {
+public protocol Encoding {
     var dictionary: [String: Any] { get }
 }
 
-extension Encoding {
+public extension Encoding {
     var dictionary: [String: Any] {
         var dictionary: [String: Any] = [:]
         for (key, value) in values {
