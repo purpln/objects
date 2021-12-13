@@ -1,12 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Sergey Romanenko on 19.09.2021.
-//
-
-import Foundation
-
 @propertyWrapper
 public class Observable<Value> {
     public var closure: ((ObservableData<Value>)->())
