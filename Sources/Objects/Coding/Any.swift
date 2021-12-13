@@ -36,10 +36,7 @@ func extensions(of type: Any.Type) -> AnyExtensions.Type {
 struct MemoryAddress<T>: CustomStringConvertible {
     let value: Int
     
-    var description: String {
-        let length = 2 + 2 * MemoryLayout<UnsafeRawPointer>.size
-        return String(format: "%0\(length)p", value)
-    }
+    var description: String { .init(value+8, radix: 16) }
     
     init(of structPointer: UnsafePointer<T>) {
         value = Int(bitPattern: structPointer)
