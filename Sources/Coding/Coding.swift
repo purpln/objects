@@ -87,13 +87,14 @@ public extension Encoding {
                 dictionary.append(convert(i))
             }
             return dictionary
-        }else if let value = check(any) {
+        } else if let value = check(any) {
             return value
         } else { return any }
     }
     
     private func check(_ value : Any) -> Any? {
         let value = unwrap(any: value)
+        print(value, type(of: value), value is Encoding)
         if let model = value as? Encoding {
             return model.dictionary
         } else { return value }
@@ -101,12 +102,9 @@ public extension Encoding {
     
     func unwrap(any: Any) -> Any? {
         let mirror = Mirror(reflecting: any)
-        if mirror.displayStyle != .optional {
-            return any
-        }
+        if mirror.displayStyle != .optional { return any }
         
-        if mirror.children.count == 0 { return nil }
-        let (_, some) = mirror.children.first!
+        guard let (_, some) = mirror.children.first else { return nil }
         return some
     }
 }
