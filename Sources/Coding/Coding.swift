@@ -19,7 +19,7 @@ public extension Decoding {
             }
         }
     }
-    private var key: UnsafeRawPointer { UnsafeRawPointer(bitPattern: "\(Self.self)".hashValue)! }
+    //private var key: UnsafeRawPointer { UnsafeRawPointer(bitPattern: "\(Self.self)".hashValue)! }
     private var mirror: Mirror { Mirror(reflecting: self) }
     private var structure: Bool { mirror.displayStyle == .struct }
 }
