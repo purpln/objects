@@ -24,7 +24,7 @@ public extension Decoding {
     private var structure: Bool { mirror.displayStyle == .struct }
 }
 
-extension Decoding {
+public extension Decoding {
     mutating func address() -> Int { structure ? addressStruct() : addressClass() }
     mutating func properties() -> [String: Int] { structure ? propertiesStruct() : propertiesClass() }
 }
