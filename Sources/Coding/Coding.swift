@@ -1,11 +1,11 @@
 public protocol Coding: Decoding, Encoding { }
 
 public protocol Decoding {
-    mutating func configure(_ values: Any)
+    mutating func configure(_ values: Any?)
 }
 
 public extension Decoding {
-    mutating func configure(_ values: Any) {
+    mutating func configure(_ values: Any?) {
         guard let values = values as? [String: Any] else { return }
         var types: [String: (AnyExtensions.Type, Int)] = [:]
         let address = address()
@@ -15,7 +15,7 @@ public extension Decoding {
             if let mod = properties[label] {
                 let type = extensions(of: type(of: value))
                 types[label] = (type, mod)
-                type.setValueToAdress(address + mod, values[label])
+                type.setValue(address + mod, values[label])
             }
         }
     }
@@ -58,24 +58,16 @@ extension Decoding {
 }
 
 public protocol Encoding {
-    var dictionary: [String: Any] { get }
+    var values: [String: Any] { get }
 }
 
 public extension Encoding {
-    var dictionary: [String: Any] {
-        var dictionary: [String: Any] = [:]
-        for (key, value) in values {
-            dictionary[key] = convert(value)
-        }
-        return dictionary
-    }
-    
     var values: [String: Any] {
         let mirror = Mirror(reflecting: self)
         var dictionary: [String: Any] = [:]
         for i in mirror.children {
             guard let label = i.label else { continue }
-            dictionary[label] = i.value
+            dictionary[label] = convert(i.value)
         }
         return dictionary
     }
@@ -92,11 +84,10 @@ public extension Encoding {
         } else { return any }
     }
     
-    private func check(_ value : Any) -> Any? {
+    private func check(_ value: Any) -> Any? {
         let value = unwrap(any: value)
-        print(value, type(of: value), value is Encoding)
         if let model = value as? Encoding {
-            return model.dictionary
+            return model.values
         } else { return value }
     }
     

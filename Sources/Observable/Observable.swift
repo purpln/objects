@@ -1,12 +1,12 @@
 @propertyWrapper
 public class Observable<Value> {
-    public var closure: ((ObservableData<Value>)->())
+    public var closures: [(ObservableData<Value>) -> Void] = []
     var value: Value
     
     public func set(_ value: Value){
         let old = self.value
         self.value = value
-        closure(ObservableData(old: old, new: value))
+        closures.forEach { $0(ObservableData(old: old, new: value)) }
     }
     
     public func silent(_ value: Value) {
@@ -14,7 +14,7 @@ public class Observable<Value> {
     }
     
     public func add(_ closure: @escaping (ObservableData<Value>)->()) {
-        self.closure = closure
+        closures.append(closure)
     }
     
     public var projectedValue: Observable<Value> { self }
@@ -24,7 +24,6 @@ public class Observable<Value> {
     }
     public init(wrappedValue: Value) {
         self.value = wrappedValue
-        closure = { _ in }
     }
 }
 
