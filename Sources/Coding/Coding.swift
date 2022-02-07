@@ -1,5 +1,14 @@
 public protocol Coding: Decoding, Encoding { }
 
+extension Coding {
+    @discardableResult mutating
+    public func apply(_ block: (inout Self) -> Void) -> Self {
+        var copy = self
+        block(&copy)
+        return copy
+    }
+}
+
 public protocol Decoding {
     mutating func configure(_ values: Any?)
 }
